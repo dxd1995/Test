@@ -1,0 +1,80 @@
+﻿<html>
+<head>
+    <script src="~/jquery.min.js"></script>
+    <script src="~/angular.min.js"></script>
+    <script>
+        var app = angular.module('test', []);
+        app.controller('a', function ($scope,$rootScope) {
+            $scope.firstName = "John";
+            $rootScope.root = "AAA";
+        });
+
+        function ajaxObject() {
+            var xmlHttp;
+            try {
+                // Firefox, Opera 8.0+, Safari
+                xmlHttp = new XMLHttpRequest();
+            }
+            catch (e) {
+                // Internet Explorer
+                try {
+                    xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+                } catch (e) {
+                    try {
+                        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    } catch (e) {
+                        alert("您的浏览器不支持AJAX！");
+                        return false;
+                    }
+                }
+            }
+            return xmlHttp;
+        }
+
+        function post() {
+            var xmlHttp = ajaxObject();
+            xmlHttp.open("post", '../Main/AjaxTest', true);
+            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    if (xmlHttp.status == 200) {
+                        document.getElementById('content').innerHTML = xmlHttp.responseText;
+                    }
+                }
+            }
+            xmlHttp.send('a=' + document.getElementById('a').value);
+        }
+
+        function jqPost() {
+            $.ajax({
+                type: 'POST',
+                url: '../Main/AjaxTest',
+                data: {
+                    'a': $('#a').val()
+                },
+                success: function (data) {
+                    $('#content').html(data);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div ng-app="test" ng-controller="a">
+        @*<input type="number" ng-model="a"/>
+        <input type="number" ng-model="b" />
+        {{ a*b }}*@
+        {{ firstName }}
+        {{ root }}
+    </div>
+    @*<div>
+        <input id="a" type="text" />
+        <button onclick="post()">发送ajax</button>
+        <button onclick="jqPost()">发送jq的ajax</button>
+        <br />
+        <div id="content">
+            adsadsa
+        </div>
+    </div>*@
+</body>
+</html>
