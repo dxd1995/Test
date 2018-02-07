@@ -16,7 +16,6 @@ namespace AllTest.Controllers
 
         public IActionResult AjaxTest(string a)
         {
-
             return Content("<button>" + a + "</button>");
         }
     }
